@@ -1,0 +1,17 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /iam
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:55002/airsoft-iam
+    username: postgres
+    password: postgrespw
+  liquibase:
+    change-log: classpath:/db/master-changelog.xml
+
+authentication:
+  jwt:
+    secret: secret
+    expiration: 120
