@@ -10,6 +10,7 @@ import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -34,9 +35,12 @@ public final class JwtTokenUtil {
 
     public String generateToken(final UserDto user) {
         var now = System.currentTimeMillis();
+        var firstAuthority = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst().orElse(null);
         return Jwts.builder()
                 .setId(user.getReference())
-                .setSubject("USER")
+                .setSubject(firstAuthority)
                 .setExpiration(createExpiration())
                 .setIssuedAt(createIssuedAt())
                 .signWith(createKey(), SignatureAlgorithm.HS512)
@@ -46,7 +50,7 @@ public final class JwtTokenUtil {
     public String refreshToken(final String token) {
         return Jwts.builder()
                 .setId(getReference(token))
-                .setSubject("USER")
+                .setSubject(getAuthority(token))
                 .setExpiration(createExpiration())
                 .setIssuedAt(createIssuedAt())
                 .signWith(createKey(), SignatureAlgorithm.HS512)
