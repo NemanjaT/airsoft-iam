@@ -47,7 +47,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManagerBean(
             AuthenticationConfiguration authenticationConfiguration
     ) throws Exception {
-        var authManager = authenticationConfiguration.getAuthenticationManager();
         return authenticationConfiguration.getAuthenticationManager();
     }
 
