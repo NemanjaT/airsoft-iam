@@ -10,6 +10,9 @@
             <column name="id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" />
             </column>
+            <column name="reference" type="varchar(36)">
+                <constraints nullable="true" unique="true" />
+            </column>
             <column name="email" type="varchar2(100)">
                 <constraints unique="true" nullable="false" />
             </column>
@@ -22,6 +25,7 @@
     <changeSet id="add-sample-user" author="ntozic">
         <insert tableName="users">
             <column name="email" value="nemanja.tozic@email.com" />
+            <column name="reference" value="08819509-f813-43ed-9200-b1436d88f85d" />
             <!-- password is 'password' -->
             <column name="password" value="$2a$10$oMU9KUm6gOqte348xLEyU.Nbst1XJc7jYpSShhtcN7laNqFAFpzOW" />
         </insert>

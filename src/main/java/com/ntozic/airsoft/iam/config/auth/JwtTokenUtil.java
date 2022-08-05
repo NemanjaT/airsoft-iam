@@ -1,11 +1,15 @@
 package com.ntozic.airsoft.iam.config.auth;
 
+import com.ntozic.airsoft.iam.dao.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -16,43 +20,42 @@ import java.util.Date;
 
 @Component
 public final class JwtTokenUtil {
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
+
     @Value("${authentication.jwt.secret}")
     private String jwtSecret;
     
     @Value("${authentication.jwt.expiration}")
     private int jwtExpirationMinutes;
 
-    public Key getKey() {
-        return Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public String generateToken(final UserDetails userDetails) {
-        var now = System.currentTimeMillis();
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setExpiration(getExpiration())
-                .setIssuedAt(getIssuedAt())
-                .signWith(getKey(), SignatureAlgorithm.HS512)
-                .compact();
-    }
-
     public String getTokenFromHeader(String authHeader) {
         return authHeader.split(" ", 2)[1].trim();
     }
 
-    public String refreshToken(final String token) {
+    public String generateToken(final UserDto user) {
         var now = System.currentTimeMillis();
         return Jwts.builder()
-                .setSubject(getEmail(token))
-                .setExpiration(getExpiration())
-                .setIssuedAt(getIssuedAt())
-                .signWith(getKey(), SignatureAlgorithm.HS512)
+                .setId(user.getReference())
+                .setSubject("USER")
+                .setExpiration(createExpiration())
+                .setIssuedAt(createIssuedAt())
+                .signWith(createKey(), SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    public String refreshToken(final String token) {
+        return Jwts.builder()
+                .setId(getReference(token))
+                .setSubject("USER")
+                .setExpiration(createExpiration())
+                .setIssuedAt(createIssuedAt())
+                .signWith(createKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public Claims getClaims(final String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getKey())
+                .setSigningKey(createKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -62,24 +65,36 @@ public final class JwtTokenUtil {
         return getClaims(token).getExpiration();
     }
 
-    public boolean isTokenValid(String token) {
-        var claims = getClaims(token);
-
-        return getClaims(token).getSubject() != null
-                && !claims.getSubject().isBlank()
-                && claims.getExpiration() != null
-                && claims.getExpiration().after(new Date());
+    public boolean isValid(String token) {
+        try {
+            var claims = getClaims(token);
+            return getClaims(token).getSubject() != null
+                    && !claims.getSubject().isBlank()
+                    && claims.getExpiration() != null
+                    && claims.getExpiration().after(new Date());
+        } catch (InvalidKeyException | SignatureException e) {
+            logger.warn("Incoming request with invalid key.", e);
+            return false;
+        }
     }
 
-    public String getEmail(String token) {
+    public String getReference(String token) {
+        return getClaims(token).getId();
+    }
+
+    public String getAuthority(String token) {
         return getClaims(token).getSubject();
     }
 
-    private Date getExpiration() {
+    private Key createKey() {
+        return Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private Date createExpiration() {
         return Date.from(LocalDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant(ZoneOffset.UTC));
     }
 
-    private Date getIssuedAt() {
+    private Date createIssuedAt() {
         return Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
     }
 }

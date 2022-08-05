@@ -21,7 +21,7 @@ public class UserService {
 
     public UserDto getUserByEmail(String email) throws UserNotFoundException {
         return userRepository.findByEmail(email)
-                .map(u -> new UserDto(u.getEmail(), u.getPassword(), List.of(() -> "USER")))
+                .map(u -> new UserDto(u.getReference(), u.getEmail(), u.getPassword(), List.of(() -> "USER")))
                 .orElseThrow(() -> new UserNotFoundException(format("User with email=%s not found", email)));
     }
 }

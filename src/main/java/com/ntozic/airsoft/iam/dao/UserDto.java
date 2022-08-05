@@ -10,6 +10,7 @@ import java.util.List;
 @Value
 @AllArgsConstructor
 public class UserDto implements UserDetails {
+    String reference;
     String email;
     String password;
     List<GrantedAuthority> authorities;

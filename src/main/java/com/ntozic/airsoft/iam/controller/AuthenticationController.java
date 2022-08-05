@@ -35,12 +35,14 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var userDetails = userService.getUserByEmail(request.getEmail());
-        var token = jwtTokenUtil.generateToken(userDetails);
+        var user = userService.getUserByEmail(request.getEmail());
+        var token = jwtTokenUtil.generateToken(user);
         var expirationTime = jwtTokenUtil.getExpiration(token);
-        return ResponseEntity.ok(new AuthenticationResponse(
+        return ResponseEntity.ok(
+            new AuthenticationResponse(
                 token,
-                expirationTime.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime())
+                expirationTime.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            )
         );
     }
 }

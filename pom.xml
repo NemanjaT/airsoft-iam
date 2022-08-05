@@ -8,15 +8,19 @@
         <version>2.7.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.ntozic.airsoft</groupId>
     <artifactId>airsoft-iam</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>airsoft-iam</name>
     <description>airsoft-iam</description>
+
     <properties>
         <java.version>18</java.version>
         <jjwt.version>0.11.5</jjwt.version>
     </properties>
+
+    <packaging>jar</packaging>
 
     <dependencyManagement>
         <dependencies>
@@ -69,6 +73,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Data
 @Table(name = "users")
@@ -23,6 +24,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     private Long id;
+
+    @Column(name = "reference", unique = true, nullable = false, updatable = false)
+    private String reference = UUID.randomUUID().toString();
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;

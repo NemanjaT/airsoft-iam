@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:55002/airsoft-iam
+    url: jdbc:postgresql://localhost:5432/airsoft-iam
     username: postgres
     password: postgrespw
   liquibase:

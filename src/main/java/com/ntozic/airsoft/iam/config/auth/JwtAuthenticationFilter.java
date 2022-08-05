@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -43,15 +44,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         var token = jwtTokenUtil.getTokenFromHeader(authHeader);
-        if (!jwtTokenUtil.isTokenValid(token)) {
+        if (!jwtTokenUtil.isValid(token)) {
             logger.debug("JWT token is invalid");
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            var userDetails = userService.getUserByEmail(jwtTokenUtil.getEmail(token));
-            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    jwtTokenUtil.getReference(token),
+                    null,
+                    List.of(() -> jwtTokenUtil.getAuthority(token))
+            );
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception exception) {
