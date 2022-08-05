@@ -13,5 +13,5 @@ spring:
 
 authentication:
   jwt:
-    secret: secret
+    secret: "7c03cfe1-33d8-4301-8779-ce5c267cafb4-7c03cfe1-33d8-4301-8779-ce5c267cafb4-7c03cfe1-33d8-4301-8779-ce5c267cafb4"
     expiration: 120

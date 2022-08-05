@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -24,12 +23,7 @@ public final class JwtTokenUtil {
     private int jwtExpirationMinutes;
 
     public Key getKey() {
-        return Keys.hmacShaKeyFor(
-                Base64.getEncoder()
-                        .encode(("7c03cfe1-33d8-4301-8779-ce5c267cafb4-7c03cfe1-33d8-4301-8779-ce5c267cafb4-7c03cfe1-" +
-                                "33d8-4301-8779-ce5c267cafb4ı")
-                                .getBytes(StandardCharsets.UTF_8))
-        );
+        return Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(final UserDetails userDetails) {
