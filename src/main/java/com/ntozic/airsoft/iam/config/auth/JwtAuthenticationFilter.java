@@ -1,6 +1,5 @@
 package com.ntozic.airsoft.iam.config.auth;
 
-import com.ntozic.airsoft.iam.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,11 +21,9 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public JwtAuthenticationFilter(UserService userService, JwtTokenUtil jwtTokenUtil) {
-        this.userService = userService;
+    public JwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
