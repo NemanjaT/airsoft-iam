@@ -1,6 +1,6 @@
 package com.ntozic.airsoft.iam.config.auth;
 
-import com.ntozic.airsoft.iam.dao.UserDto;
+import com.ntozic.airsoft.iam.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,8 +1,8 @@
 package com.ntozic.airsoft.iam.controller;
 
 import com.ntozic.airsoft.iam.config.auth.JwtTokenUtil;
-import com.ntozic.airsoft.iam.dao.request.AuthenticationRequest;
-import com.ntozic.airsoft.iam.dao.response.AuthenticationResponse;
+import com.ntozic.airsoft.iam.dto.request.AuthenticationRequest;
+import com.ntozic.airsoft.iam.dto.response.AuthenticationResponse;
 import com.ntozic.airsoft.iam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +34,8 @@ public class AuthenticationController {
     @PostMapping({"", "/"})
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userService.getUserByEmail(request.getEmail());
+                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        var user = userService.getUserByEmail(request.email());
         var token = jwtTokenUtil.generateToken(user);
         var expirationTime = jwtTokenUtil.getExpiration(token);
         return ResponseEntity.ok(

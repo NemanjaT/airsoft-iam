@@ -1,15 +1,16 @@
-package com.ntozic.airsoft.iam.dao;
+package com.ntozic.airsoft.iam.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Value
 @AllArgsConstructor
-public class UserDto implements UserDetails {
+public class UserDto implements UserDetails, Serializable {
     String reference;
     String email;
     String password;

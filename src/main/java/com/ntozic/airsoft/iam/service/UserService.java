@@ -1,6 +1,6 @@
 package com.ntozic.airsoft.iam.service;
 
-import com.ntozic.airsoft.iam.dao.UserDto;
+import com.ntozic.airsoft.iam.dto.UserDto;
 import com.ntozic.airsoft.iam.exception.UserNotFoundException;
 import com.ntozic.airsoft.iam.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

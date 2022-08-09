@@ -19,6 +19,12 @@
             <column name="password" type="varchar2(200)">
                 <constraints nullable="false" />
             </column>
+            <column name="created_at" type="timestamp" defaultValue="now()">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_at" type="timestamp" defaultValue="now()">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
