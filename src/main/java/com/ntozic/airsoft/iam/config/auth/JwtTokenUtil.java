@@ -39,7 +39,7 @@ public final class JwtTokenUtil {
                 .map(GrantedAuthority::getAuthority)
                 .findFirst().orElse(null);
         return Jwts.builder()
-                .setId(user.getReference())
+                .setId(user.reference())
                 .setSubject(firstAuthority)
                 .setExpiration(createExpiration())
                 .setIssuedAt(createIssuedAt())

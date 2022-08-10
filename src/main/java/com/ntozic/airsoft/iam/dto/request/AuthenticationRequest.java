@@ -8,5 +8,8 @@ import java.io.Serializable;
 
 @Builder
 @Jacksonized
-public record AuthenticationRequest(String email, String password) implements Serializable {
+public record AuthenticationRequest(
+        String email,
+        String password
+) implements Serializable {
 }
