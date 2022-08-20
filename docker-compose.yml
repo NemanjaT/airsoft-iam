@@ -2,15 +2,19 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:13.6
+    image: mongo:5.0.10
+    hostname: mongo
     ports:
-      - "8050:5432"
+      - "8050:27017"
     environment:
-      - POSTGRES_DB=airsoft-iam
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgrespw
+      - MONGO_INITDB_DATABASE=airsoft-iam
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodb_data:/var/lib/mongodb/data/
+    command: [--auth, "--bind_ip", "0.0.0.0"]
+    restart: always
   web:
     build:
       context: .
@@ -18,11 +22,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/airsoft-iam
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:mongodb@db:27017/airsoft-iam
     volumes:
       - .:/app
     depends_on:
       - db
 
 volumes:
-  postgres_data:
+  mongodb_data:

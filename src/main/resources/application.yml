@@ -4,12 +4,11 @@ server:
     context-path: /iam
 
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/airsoft-iam
-    username: postgres
-    password: postgrespw
-  liquibase:
-    change-log: classpath:/db/master-changelog.xml
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/airsoft-iam
+      username: mongodb
+      password: mongodb
 
 authentication:
   jwt:

@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,23 +22,26 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
+@Document("users")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, unique = true, nullable = false)
-    private Long id;
+    private String id;
 
-    @Column(name = "reference", unique = true, nullable = false, updatable = false)
     @Builder.Default
+    @Indexed(unique = true)
     private String reference = UUID.randomUUID().toString();
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Indexed(unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @NotNull
     private String password;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @Override
     public String toString() {
@@ -44,6 +49,8 @@ public class User extends BaseEntity {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='*****" +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 
@@ -53,11 +60,11 @@ public class User extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(reference, user.reference) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(reference, user.reference) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, reference, email, password);
+        return Objects.hash(super.hashCode(), id, reference, email, password, createdAt, updatedAt);
     }
 }
