@@ -1,10 +1,10 @@
 package com.ntozic.airsoft.iam.dto.response;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record AuthenticationResponse(
         String token,
-        LocalDateTime expiredAt
+        ZonedDateTime expiredAt
 ) implements Serializable {
 }

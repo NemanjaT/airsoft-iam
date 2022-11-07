@@ -1,15 +1,29 @@
 package com.ntozic.airsoft.iam.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ntozic.airsoft.iam.model.User;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+@Builder
 public record UserDto (
         String reference,
         String email,
         String password,
+        String firstName,
+        String lastName,
+        String address,
+        String city,
+        String countryCode,
+        LocalDate dateOfBirth,
         List<GrantedAuthority> authorities
 ) implements UserDetails {
     @Override
@@ -18,6 +32,7 @@ public record UserDto (
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -45,5 +60,38 @@ public record UserDto (
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static UserDto fromEntity(User user) {
+        return UserDto.builder()
+                .authorities(List.of(() -> "USER"))
+                .reference(user.getReference())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .address(user.getAddress())
+                .city(user.getCity())
+                .countryCode(user.getCountryCode())
+                .dateOfBirth(user.getDateOfBirth())
+                .password(user.getPassword())
+                .build();
+    }
+
+    public User toEntity() {
+        return toEntity(password);
+    }
+
+    public User toEntity(String password) {
+        return User.builder()
+                .reference(Optional.ofNullable(reference).orElse(UUID.randomUUID().toString()))
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .address(address)
+                .city(city)
+                .countryCode(countryCode)
+                .dateOfBirth(dateOfBirth)
+                .password(password)
+                .build();
     }
 }
