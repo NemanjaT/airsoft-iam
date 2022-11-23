@@ -17,7 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     @QueryMapping(name = "currentUser")
     public UserDto currentUser() {
         var currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
