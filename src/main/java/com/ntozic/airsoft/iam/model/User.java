@@ -65,12 +65,13 @@ public class User {
                 "id='" + id + '\'' +
                 ", reference='" + reference + '\'' +
                 ", email='" + email + '\'' +
+                ", password='***'" +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
@@ -82,11 +83,35 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(reference, user.reference) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(countryCode, user.countryCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
+        return Objects.equals(id, user.id)
+                && Objects.equals(reference, user.reference)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName)
+                && Objects.equals(address, user.address)
+                && Objects.equals(city, user.city)
+                && Objects.equals(countryCode, user.countryCode)
+                && Objects.equals(dateOfBirth, user.dateOfBirth)
+                && Objects.equals(createdAt, user.createdAt)
+                && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reference, email, password, firstName, lastName, address, city, countryCode, dateOfBirth, createdAt, updatedAt);
+        return Objects.hash(
+                id,
+                reference,
+                email,
+                password,
+                firstName,
+                lastName,
+                address,
+                city,
+                countryCode,
+                dateOfBirth,
+                createdAt,
+                updatedAt
+        );
     }
 }

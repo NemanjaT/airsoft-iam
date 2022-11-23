@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import static java.lang.String.format;
+
 @Configuration
 public class DateScalarConfig {
     @Bean
@@ -36,9 +38,10 @@ public class DateScalarConfig {
                                 return LocalDate.parse(val, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                             }
                             throw new CoercingParseValueException(
-                                    "Expected a String, but got " + input.getClass().getName() + ".");
+                                    format("Expected a String, but got %s.", input.getClass().getName()));
                         } catch (DateTimeParseException e) {
-                            throw new CoercingParseValueException("Not a valid date in value " + input.toString(), e);
+                            throw new CoercingParseValueException(
+                                    format("Not a valid date in value %s", input.toString()), e);
                         }
                     }
 
@@ -48,7 +51,7 @@ public class DateScalarConfig {
                             return this.parseValue(strVal.getValue());
                         }
                         throw new CoercingParseLiteralException(
-                                "Expected a StringValue, but got " + input.getClass().getName() + ".");
+                                format("Expected a StringValue, but got %s.", input.getClass().getName()));
                     }
                 })
                 .build();

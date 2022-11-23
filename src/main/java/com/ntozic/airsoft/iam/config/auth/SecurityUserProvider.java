@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static java.lang.String.format;
+
 @Service
 public class SecurityUserProvider implements UserDetailsService {
     private final UserService userService;
@@ -22,7 +24,7 @@ public class SecurityUserProvider implements UserDetailsService {
         try {
             return userService.getUserByEmail(username);
         } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException("Username " + username + " not found", e);
+            throw new UsernameNotFoundException(format("Username %s not found", username), e);
         }
     }
 }

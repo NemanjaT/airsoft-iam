@@ -1,6 +1,6 @@
 package com.ntozic.airsoft.iam.controller.graphql;
 
-import com.ntozic.airsoft.iam.dto.PublicUserDto;
+import com.ntozic.airsoft.iam.dto.UserDto;
 import com.ntozic.airsoft.iam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -23,20 +23,18 @@ public class PublicController {
 
     @QueryMapping(name = "publicUserByReference")
     @PreAuthorize("isAnonymous() || isAuthenticated()")
-    public PublicUserDto publicUserByReference(@Argument String reference) {
+    public UserDto publicUserByReference(@Argument String reference) {
         Assert.isTrue(StringUtils.hasLength(reference.trim()), "error.invalidReference");
 
-        final var user = userService.getUserByReference(reference);
-        return PublicUserDto.fromUserDto(user);
+        return userService.getUserByReference(reference);
     }
 
     @QueryMapping(name = "publicUsersByReference")
     @PreAuthorize("isAnonymous() || isAuthenticated()")
-    public List<PublicUserDto> publicUsersByReference(@Argument List<String> references) {
+    public List<UserDto> publicUsersByReference(@Argument List<String> references) {
         Assert.notEmpty(references, "error.invalidReferences");
         references.forEach(r -> Assert.isTrue(StringUtils.hasLength(r.trim()), "error.invalidReference"));
 
-        final var users = userService.getUsersByReference(references);
-        return users.stream().map(PublicUserDto::fromUserDto).toList();
+        return userService.getUsersByReference(references);
     }
 }
