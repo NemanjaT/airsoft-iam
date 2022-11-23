@@ -40,7 +40,6 @@ public class User {
 
     private String firstName;
 
-    @NotNull
     private String lastName;
 
     private String address;
