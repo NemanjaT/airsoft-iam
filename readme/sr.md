@@ -14,4 +14,4 @@ perzistenciju korisnika.
             1. `sudo apt-get remove docker docker-engine docker.io containerd runc`
         3. Windows 🪲
             1. Preuzmite [odavde](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) i pokrenite
-    2. Pokrenuti naredbu preko konzole/terminala `docker-compose up`
+    2. Pokrenuti naredbu preko konzole/terminala `docker-compose up --build`

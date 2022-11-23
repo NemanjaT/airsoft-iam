@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+      - "8010:8010"
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:mongodb@db:27017/airsoft-iam
     volumes:

@@ -1,15 +1,14 @@
-package com.ntozic.airsoft.iam.controller;
+package com.ntozic.airsoft.iam.controller.graphql;
 
 import com.ntozic.airsoft.iam.dto.UserDto;
 import com.ntozic.airsoft.iam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-@RestController
-@RequestMapping("/api")
+@Controller
 public class UserController {
     private final UserService userService;
 
@@ -18,9 +17,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping("/current-user")
-    public ResponseEntity<UserDto> getCurrentUser() {
+    @PreAuthorize("isAuthenticated()")
+    @QueryMapping(name = "currentUser")
+    public UserDto currentUser() {
         var currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(userService.getUserByReference(currentUser));
+        return userService.getUserByReference(currentUser);
     }
 }

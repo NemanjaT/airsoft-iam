@@ -1,5 +1,6 @@
 package com.ntozic.airsoft.iam.config.command;
 
+import com.ntozic.airsoft.iam.dto.UserStatus;
 import com.ntozic.airsoft.iam.model.User;
 import com.ntozic.airsoft.iam.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class SampleDataInserter implements CommandLineRunner {
                 .countryCode("RS")
                 .reference("08819509-f813-43ed-9200-b1436d88f85d")
                 .password("$2a$10$oMU9KUm6gOqte348xLEyU.Nbst1XJc7jYpSShhtcN7laNqFAFpzOW") // "password"
+                .status(UserStatus.ACTIVE)
                 .build());
     }
 

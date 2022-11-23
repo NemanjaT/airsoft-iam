@@ -1,5 +1,6 @@
 package com.ntozic.airsoft.iam.config.auth;
 
+import com.ntozic.airsoft.iam.exception.UserNotFoundException;
 import com.ntozic.airsoft.iam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,10 @@ public class SecurityUserProvider implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userService.getUserByEmail(username);
+        try {
+            return userService.getUserByEmail(username);
+        } catch (UserNotFoundException e) {
+            throw new UsernameNotFoundException("Username " + username + " not found", e);
+        }
     }
 }

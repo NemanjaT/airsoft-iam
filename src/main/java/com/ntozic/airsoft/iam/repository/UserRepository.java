@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query("{reference:  '?0'}")
     Optional<User> findByReference(String reference);
+
+    @Query("{reference:  {$in:  ?0}}")
+    List<User> findByReferenceIn(List<String> references);
 }

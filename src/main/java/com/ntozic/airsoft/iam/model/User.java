@@ -1,5 +1,6 @@
 package com.ntozic.airsoft.iam.model;
 
+import com.ntozic.airsoft.iam.dto.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,10 +36,8 @@ public class User {
     @Indexed(unique = true)
     private String email;
 
-    @NotNull
     private String password;
 
-    @NotNull
     private String firstName;
 
     @NotNull
@@ -48,11 +47,11 @@ public class User {
 
     private String city;
 
-    @NotNull
     private String countryCode;
 
-    @NotNull
     private LocalDate dateOfBirth;
+
+    private UserStatus status;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -72,6 +71,7 @@ public class User {
                 ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

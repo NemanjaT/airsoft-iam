@@ -1,14 +1,22 @@
 server:
   port: 8000
-  servlet:
-    context-path: /iam
 
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/airsoft-iam
-      username: mongodb
-      password: mongodb
+      uri: mongodb://mongodb:mongodb@localhost:8050/airsoft-iam
+      auto-index-creation: true
+  graphql:
+    cors:
+      allowed-origins: "*"
+    graphiql:
+      enabled: true
+
+grpc:
+  server:
+    port: 8010
+    security:
+      enabled: false
 
 authentication:
   jwt:

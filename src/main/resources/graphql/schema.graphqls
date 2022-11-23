@@ -1,0 +1,73 @@
+# Scalars
+
+scalar Date
+
+# Common
+
+type PublicUser {
+    reference: String!
+    firstName: String!
+    lastName: String!
+}
+
+enum UserStatus {
+    ACTIVE
+    BLOCKED
+}
+
+type User {
+    reference: String!
+    email: String!
+    firstName: String!
+    lastName: String!
+    address: String
+    city: String
+    countryCode: String
+    dateOfBirth: Date
+    status: UserStatus
+}
+
+# Requests
+
+input LoginRequest {
+    email: String!
+    password: String!
+}
+
+input RegisterRequest {
+    firstName: String!
+    lastName: String!
+    email: String!
+    address: String
+    city: String
+    countryCode: String!
+    dateOfBirth: Date!
+    password1: String!
+    password2: String!
+}
+
+# Responses
+
+type LoginResponse {
+    reference: String!
+    token: String!
+    expiresAt: String!
+}
+
+type OperationResultResponse {
+    success: Boolean!
+}
+
+# Config
+
+type Query {
+    publicUserByReference(reference: String!): PublicUser!
+    publicUsersByReference(references: [String!]!): [PublicUser!]!
+
+    currentUser: User!
+}
+
+type Mutation {
+    login(request: LoginRequest!): LoginResponse!
+    register(request: RegisterRequest!): OperationResultResponse!
+}

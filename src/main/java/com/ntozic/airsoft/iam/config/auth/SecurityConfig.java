@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +18,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 
+@Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -39,8 +42,11 @@ public class SecurityConfig {
                         res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/auth**", "/auth/**").permitAll()
-                .antMatchers("/api").hasAnyRole("USER")
+                .antMatchers("/graphql", "/graphql/").permitAll()
+                .antMatchers("/graphiql**", "/graphiql/**").permitAll()
+                .antMatchers("/api/auth**", "/api/auth/**").permitAll()
+                .antMatchers("/api/public**", "/api/public/**").permitAll()
+                .antMatchers("/api/user").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

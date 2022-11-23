@@ -1,57 +1,67 @@
 package com.ntozic.airsoft.iam.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.ntozic.airsoft.iam.dto.UserDto;
+import com.ntozic.airsoft.iam.dto.UserStatus;
 import lombok.Builder;
-import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Builder
 @Jacksonized
-@Data
-public class RegisterRequest implements Serializable {
-    @NotNull
-    @Size(min = 2)
-    private String firstName;
+public record RegisterRequest (
+        @NotNull(message = "error.firstName.empty")
+        @Size(min = 2, message = "error.firstName.size")
+        String firstName,
 
-    @NotNull
-    @Size(min = 2)
-    private String lastName;
+        @NotNull(message = "error.lastName.empty")
+        @Size(min = 2, message = "error.lastName.size")
+        String lastName,
 
-    @Email
-    @NotNull
-    private String email;
+        @NotNull(message = "error.email.empty")
+        @Email(message = "error.email.invalid")
+        String email,
+        String address,
+        String city,
 
-    private String address;
+        @NotNull(message = "error.countryCode.empty")
+        @Size(min = 2, max = 2, message = "error.countryCode.size")
+        String countryCode,
 
-    private String city;
+        @NotNull(message = "error.dateOfBirth.empty")
+        @PastOrPresent(message = "error.dateOfBirth.pastOrPresent")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        @JsonSerialize(using = LocalDateSerializer.class)
+        LocalDate dateOfBirth,
 
-    @NotNull
-    @Size(min = 2, max = 2)
-    private String countryCode;
+        @NotNull(message = "error.password1.empty")
+        @Size(min = 8, message = "error.password1.size")
+        String password1,
 
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
-    private LocalDate dateOfBirth;
+        @NotNull(message = "error.password2.empty")
+        @Size(min = 8, message = "error.password2.size")
+        String password2
+) implements Serializable {
+    @AssertTrue(message = "error.password1.invalid")
+    public boolean passwordCriteria() {
+        return password1.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+    }
 
-    @NotNull
-    @Size(min = 8)
-    private String password;
-
-    @NotNull
-    @Size(min = 8)
-    private String passwordAgain;
-
-    @AssertTrue(message = "Passwords do not match")
-    private boolean passwordsMatch() {
-        return password.equals(passwordAgain);
+    @AssertTrue(message = "error.password.mismatch")
+    public boolean passwordsMatch() {
+        return password1.equals(password2);
     }
 
     public UserDto toDto() {
@@ -62,7 +72,8 @@ public class RegisterRequest implements Serializable {
                 .address(address)
                 .city(city)
                 .countryCode(countryCode)
-                .password(password)
+                .password(password1)
+                .status(UserStatus.ACTIVE)
                 .build();
     }
 }

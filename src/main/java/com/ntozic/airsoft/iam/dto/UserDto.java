@@ -1,6 +1,5 @@
 package com.ntozic.airsoft.iam.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ntozic.airsoft.iam.model.User;
 import lombok.Builder;
@@ -24,6 +23,7 @@ public record UserDto (
         String city,
         String countryCode,
         LocalDate dateOfBirth,
+        UserStatus status,
         List<GrantedAuthority> authorities
 ) implements UserDetails {
     @Override
@@ -59,7 +59,7 @@ public record UserDto (
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return status != UserStatus.BLOCKED;
     }
 
     public static UserDto fromEntity(User user) {
@@ -74,11 +74,8 @@ public record UserDto (
                 .countryCode(user.getCountryCode())
                 .dateOfBirth(user.getDateOfBirth())
                 .password(user.getPassword())
+                .status(user.getStatus())
                 .build();
-    }
-
-    public User toEntity() {
-        return toEntity(password);
     }
 
     public User toEntity(String password) {
@@ -92,6 +89,7 @@ public record UserDto (
                 .countryCode(countryCode)
                 .dateOfBirth(dateOfBirth)
                 .password(password)
+                .status(status)
                 .build();
     }
 }

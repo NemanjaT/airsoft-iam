@@ -1,7 +1,6 @@
 package com.ntozic.airsoft.iam.dto.request;
 
 import lombok.Builder;
-import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.Email;
@@ -11,12 +10,13 @@ import java.io.Serializable;
 
 @Builder
 @Jacksonized
-public record AuthenticationRequest(
-        @NotNull(message = "auth.error.emptyEmail")
-        @Email(message = "auth.error.invalidEmail")
+public record LoginRequest(
+        @NotNull(message = "error.email.empty")
+        @Email(message = "error.email.invalid")
         String email,
-        @NotNull(message = "auth.error.emptyPassword")
-        @Size(min = 8, message = "auth.error.sizePassword")
+
+        @NotNull(message = "error.password.empty")
+        @Size(min = 8, message = "error.password.size")
         String password
 ) implements Serializable {
 }

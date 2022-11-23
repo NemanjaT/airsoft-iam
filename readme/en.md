@@ -14,4 +14,4 @@ and storing user data.
          1. `sudo apt-get remove docker docker-engine docker.io containerd runc`
       3. Windows 🪲
          1. Download from [here](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) and execute
-   2. Run `docker-compose up`
+   2. Run `docker-compose up --build`
