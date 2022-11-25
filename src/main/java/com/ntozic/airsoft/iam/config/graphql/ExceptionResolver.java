@@ -5,11 +5,11 @@ import com.ntozic.airsoft.iam.exception.UserNotFoundException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Component

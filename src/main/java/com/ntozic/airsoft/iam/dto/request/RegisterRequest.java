@@ -7,14 +7,14 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.ntozic.airsoft.iam.dto.UserDto;
 import com.ntozic.airsoft.iam.dto.UserStatus;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 

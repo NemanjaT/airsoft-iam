@@ -7,6 +7,7 @@ import com.ntozic.airsoft.iam.dto.response.LoginResponse;
 import com.ntozic.airsoft.iam.dto.response.OperationResultResponse;
 import com.ntozic.airsoft.iam.service.UserService;
 import io.jsonwebtoken.lang.Assert;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 
-import javax.validation.Valid;
 import java.time.ZoneOffset;
 
 @Controller

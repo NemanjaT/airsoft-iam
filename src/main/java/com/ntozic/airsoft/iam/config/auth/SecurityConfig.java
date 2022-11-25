@@ -1,5 +1,6 @@
 package com.ntozic.airsoft.iam.config.auth;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -42,8 +41,8 @@ public class SecurityConfig {
                         res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/graphql", "/graphql/").permitAll()
-                .antMatchers("/graphiql**", "/graphiql/**").permitAll()
+                .requestMatchers("/graphql", "/graphql/").permitAll()
+                .requestMatchers("/graphiql**", "/graphiql/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

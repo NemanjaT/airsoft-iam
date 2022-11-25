@@ -64,7 +64,7 @@ public record UserDto (
 
     public static UserDto fromEntity(User user) {
         return UserDto.builder()
-                .authorities(List.of(() -> "USER"))
+                .authorities(List.of(() -> "ROLE_USER"))
                 .reference(user.getReference())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())

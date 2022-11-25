@@ -61,13 +61,16 @@ type OperationResultResponse {
 # Config
 
 type Query {
+    # public
     publicUserByReference(reference: String!): PublicUser!
     publicUsersByReference(references: [String!]!): [PublicUser!]!
 
+    # user auth
     currentUser: User!
 }
 
 type Mutation {
+    # public
     login(request: LoginRequest!): LoginResponse!
     register(request: RegisterRequest!): OperationResultResponse!
 }
